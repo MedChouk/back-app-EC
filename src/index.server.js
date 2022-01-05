@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 //routes
 const userRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
+const categoryRoutes = require('./routes/category');
 
 const app = express();
 
@@ -29,6 +30,7 @@ env.config();
 app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', adminRoutes);
+app.use('/api', categoryRoutes);
 
 
 //test route : 
