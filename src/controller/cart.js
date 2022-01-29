@@ -6,23 +6,25 @@ exports.addItemToCart = (req, res) => {
     .exec((error, cart) => {
         if(error) return res.status(400).json({ error });
         if (cart) {
-            
             // res.status(200).json({ message: cart });
 
             const product = req.body.cartItems.product;
-
             const item = cart.cartItems.find(c => c.product == product);
+            let condtion, action ;
 
             if (item) {
+                condtion = { "user": req.user._id, "cartItems.product": product };
+                update = { 
+                            "$set": {
+                                "cartItems.$": {
+                                    ...req.body.cartItems,
+                                    quantity: item.quantity + req.body.cartItems.quantity
+                                }
+                            }
+                        };
 
-                Cart.findOneAndUpdate({ "user": req.user._id, "cartItems.product": product }, { 
-                    "$set": {
-                        "cartItems": {
-                            ...req.body.cartItems,
-                            quantity: item.quantity + req.body.cartItems.quantity
-                        }
-                    }
-                }).exec((error, _cart) => {
+                Cart.findOneAndUpdate(condtion, update)
+                .exec((error, _cart) => {
                     if (error)  return res.status(400).json({ error });
                     if (_cart) {
                         return res.status(201).json({ cart: _cart }) ;
@@ -30,12 +32,15 @@ exports.addItemToCart = (req, res) => {
                 })
                  
             } else {
-
-                Cart.findOneAndUpdate({ user: req.user._id}, { 
-                    "$push": {
-                        "cartItems": req.body.cartItems
-                    }
-                }).exec((error, _cart) => {
+                condtion = { user: req.user._id};
+                action = { 
+                            "$push": {
+                                "cartItems": req.body.cartItems
+                            }
+                        };
+                
+                Cart.findOneAndUpdate(conditon, action)
+                .exec((error, _cart) => {
                     if (error)  return res.status(400).json({ error });
                     if (_cart) {
                         return res.status(201).json({ cart: _cart }) ;
