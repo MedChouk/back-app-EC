@@ -1,5 +1,6 @@
 const express = require('express');
 const env = require('dotenv');
+const path = require('path');
 //const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -30,6 +31,7 @@ env.config();
 
 //app.use(bodyParser());
 app.use(express.json());
+app.use('/public', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', userRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', categoryRoutes);
@@ -53,5 +55,5 @@ app.post('/data', (req, res, next) => {
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
-    //console.log(process.env.PORT);
+    // console.log(process.env.PORT);
 });
