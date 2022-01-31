@@ -1,6 +1,7 @@
 const express = require('express');
 const env = require('dotenv');
 const path = require('path');
+const cors = require('cors');
 //const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -30,6 +31,7 @@ env.config();
 // app.use(express.json());
 
 //app.use(bodyParser());
+app.use(cors());
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', userRoutes);
