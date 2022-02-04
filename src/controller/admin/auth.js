@@ -45,26 +45,26 @@ exports.signin = (req, res) => {
         (error, user) => {
             if (error) return res.status(400).json({ error });
             if (user) {
-                    if (user.authenticate(req.body.password) && user.role === 'admin'){
-                        const token = jwt.sign({_id: user._id, role: user.role}, process.env.JWT_SECRET, { expiresIn: '1h' });
-                        const {_id, firstName, lastName, email, role,fullName } = user;
-                        res.cookie("token", token, { expiresIn: "1d" });
-                        res.status(200).json({
-                            token,
-                            user: {
-                                _id,
-                                firstName,
-                                lastName,
-                                email,
-                                role,
-                                fullName
-                            }
-                        });
-                    }else {
-                        return res.status(400).json({
-                            massege: 'Invalid Password'
-                        }); 
-                    }
+                if (user.authenticate(req.body.password) && user.role === 'admin'){
+                    const token = jwt.sign({_id: user._id, role: user.role}, process.env.JWT_SECRET, { expiresIn: '1d' });
+                    const {_id, firstName, lastName, email, role,fullName } = user;
+                    res.cookie("token", token, { expiresIn: "1d" });
+                    res.status(200).json({
+                        token,
+                        user: {
+                            _id,
+                            firstName,
+                            lastName,
+                            email,
+                            role,
+                            fullName
+                        }
+                    });
+                }else {
+                    return res.status(400).json({
+                        massege: 'Invalid Password'
+                    }); 
+                }
             }else {
                 return res.status(400).json({
                     massege: 'Somthing went worng'
