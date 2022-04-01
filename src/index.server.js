@@ -11,6 +11,7 @@ const adminRoutes = require('./routes/admin/auth');
 const categoryRoutes = require('./routes/category');
 const productRoutes = require('./routes/product');
 const cartRoutes = require('./routes/cart');
+const pageRoutes = require('./routes/admin/page');
 const initialDataRoutes = require("./routes/admin/initialData");
 
 const app = express();
@@ -19,11 +20,11 @@ const app = express();
 mongoose.connect(`mongodb+srv://userdb:userdb@e-commerce-db.fzcwh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`)
     .then(() => {
         console.log('Connected to database !!');
-      })
-      .catch((err)=>{
-        console.log('Connection failed !!'+ err.message);
+    })
+    .catch((err) => {
+        console.log('Connection failed !!' + err.message);
         console.log(err.message);
-      });
+    });
 
 
 // environement variable or you can say constants :
@@ -40,6 +41,7 @@ app.use('/api', adminRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
 app.use('/api', cartRoutes);
+app.use('/api', pageRoutes);
 app.use("/api", initialDataRoutes);
 
 
